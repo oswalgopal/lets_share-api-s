@@ -18,8 +18,8 @@ app.get('/', (req,res) => {
     });
 });
 
-app.get('/getAdmin', (req,res) => {
-    pool.query('SELECT * from admin', (err2, res2) => {
+app.get('/addAdmin', (req,res) => {
+    pool.query('SELECT * from addadmin()', (err2, res2) => {
         res.send({
             response : res2.rows,
             status: 200,
