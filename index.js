@@ -63,8 +63,8 @@ app.get('/addAdmin', (req,res) => {
 /**
  * function to get the data
  */
-app.get('/getData', (req,res) => {
-    pool.query('select * from get_data($1)',[req.body.access_code], (err2,res2) => {
+app.get('/getData/:access_code', (req,res) => {
+    pool.query('select * from get_data($1)',[access_code], (err2,res2) => {
         console.log('error', err2);
         console.log('res2', res2);
         res.send({
