@@ -64,7 +64,7 @@ app.get('/addAdmin', (req,res) => {
  * function to get the data
  */
 app.get('/getData', (req,res) => {
-    pool.query(`select * from get_data(${req.body.access_code})`, (err2,res2) => {
+    pool.query('select * from get_data($1)',[req.body.access_code], (err2,res2) => {
         console.log('error', err2);
         console.log('res2', res2);
         res.send({
@@ -81,10 +81,10 @@ app.get('/getData', (req,res) => {
  */
 app.post('/add_data', (req,res) => {
     // console.log(req.body);
-    console.log(typeof (req.body.access_code));
-    const query = `select * from add_data(${req.body.access_code}, \" ${req.body.data})`;
-    pool.query(query, (err2, res2) => {
-        console.log('error', err2);
+    // console.log(typeof (req.body.access_code));
+    const query = 'select * from add_data($1, $2)' ;
+    pool.query('select * from add_data($1, $2)', [req.body.access_code, req.body.data], (err2, res2) => {
+        // console.log('error', err2);
         // console.log('res2', res2);
         if (err2) {
             res.send({
@@ -94,7 +94,7 @@ app.post('/add_data', (req,res) => {
             });
         } else {
             res.send({
-                response : res2,
+                response : res2.rows,
                 status: 200,
                 message: 'Success'
             });
