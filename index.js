@@ -61,12 +61,31 @@ app.get('/getData/accesscode=:access_code', (req,res) => {
     })
 });
 
+/**
+ * function to check that access_code exist  or not
+ */
+app.post('/check_access_code', (req,res) => {
+    pool.query('select * from check_access_code($1)', [req.body.access_code], (err2, res2) => {
+        if (err2) {
+            res.send({
+                response : err2,
+                status: 500,
+                message: 'Error'
+            });
+        } else {
+            res.send({
+                response : res2.rows,
+                status: 200,
+                message: 'Success'
+            });
+        }
+    })
+});
 
 /**
  * function to add the data
  */
 app.post('/add_data', (req,res) => {
-    const query = 'select * from add_data($1, $2)' ;
     pool.query('select * from add_data($1, $2)', [req.body.access_code, req.body.data], (err2, res2) => {
         // console.log('error', err2);
         // console.log('res2', res2);
