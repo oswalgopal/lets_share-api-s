@@ -2,6 +2,27 @@ const express = require('express');   /*** getting the express*/
 const { Pool, Client } = require('pg'); /*** getting the posgresql*/
 const app = express(); /*** creating a express app*/
 var bodyParser = require('body-parser');
+var xoauth2 = require('xoauth2');
+var mailer = require("nodemailer");
+// Use Smtp Protocol to send Email
+var smtpTransport = mailer.createTransport({
+    service: "Gmail",
+    secure: false,
+    requireTLS: true,
+    port: 587,
+    auth: {
+        type: "login",
+        user: "gploswal@gmail.com",
+        pass: "moonwalk"
+    }
+});
+var mail = {
+    from: "Gopal Oswal <gploswal@gmail.com>",
+    to: "yashirathore11@gmail.com",
+    subject: "Confirmation mail",
+    text: "sent via node api",
+    html: "<b>Sent via nodejs api</b>"
+};
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 /**
@@ -39,6 +60,14 @@ app.get('/', (req,res) => {
 
 app.get('/addAdmin', (req,res) => {
     pool.query('SELECT * from addadmin()', (err2, res2) => {
+        smtpTransport.sendMail(mail, function(error, response){
+            if(error){
+                console.log(error);
+            }else{
+                console.log("Message sent: " + response.message);
+            }
+            smtpTransport.close();
+        });
         res.send({
             response : res2.rows,
             status: 200,

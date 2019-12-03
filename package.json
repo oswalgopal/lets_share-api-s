@@ -11,6 +11,10 @@
   "dependencies": {
     "express": "^4.17.1",
     "pg": "^7.14.0",
-    "body-parser": "latest"
+    "body-parser": "latest",
+    "nodemailer": "latest"
+  },
+  "devDependencies": {
+    "xoauth2": "^1.2.0"
   }
 }
