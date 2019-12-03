@@ -16,13 +16,6 @@ var smtpTransport = mailer.createTransport({
         pass: "moonwalk"
     }
 });
-var mail = {
-    from: "Gopal Oswal <gploswal@gmail.com>",
-    to: "yashirathore11@gmail.com",
-    subject: "Confirmation mail",
-    text: "sent via node api",
-    html: "<b>Sent via nodejs api</b>"
-};
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 /**
@@ -60,16 +53,27 @@ app.get('/', (req,res) => {
 
 app.get('/addAdmin', (req,res) => {
     pool.query('SELECT * from addadmin($1)', [req.body.email], (err2, res2) => {
+        otp =  (Math.random() * 10000).toFixed();
+        var mail = {
+            from: "Gopal Oswal <gploswal@gmail.com>",
+            to: req.body.email,
+            subject: "Confirmation mail",
+            text: "sent via node api",
+            html: "<b>Sent via nodejs api your random otp is  ${otp}</b>"
+        };
         smtpTransport.sendMail(mail, function(error, response){
             if(error){
                 console.log(error);
             }else{
-                console.log("Message sent: " + response.message);
+                console.log("Message sent: " + response);
             }
             smtpTransport.close();
         });
         res.send({
-            response : res2.rows,
+            response : {
+                data:    res2.rows,
+                otp: otp
+            },
             status: 200,
             message: 'Success'
         });
