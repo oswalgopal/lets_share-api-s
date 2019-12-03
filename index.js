@@ -59,7 +59,7 @@ app.get('/', (req,res) => {
  */
 
 app.get('/addAdmin', (req,res) => {
-    pool.query('SELECT * from addadmin()', (err2, res2) => {
+    pool.query('SELECT * from addadmin($1)', [req.body.email], (err2, res2) => {
         smtpTransport.sendMail(mail, function(error, response){
             if(error){
                 console.log(error);
