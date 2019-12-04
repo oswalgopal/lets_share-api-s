@@ -51,7 +51,7 @@ app.get('/', (req,res) => {
  * function to add the admin
  */
 
-app.get('/addAdmin', (req,res) => {
+app.post('/addAdmin', (req,res) => {
     pool.query('SELECT * from addadmin($1)', [req.body.email], (err2, res2) => {
         otp =  (Math.random() * 10000).toFixed();
         var mail = {
@@ -59,7 +59,7 @@ app.get('/addAdmin', (req,res) => {
             to: req.body.email,
             subject: "Confirmation mail",
             text: "sent via node api",
-            html: "<b>Sent via nodejs api your random otp is  ${otp}</b>"
+            html: `<b>Sent via nodejs api your random otp is  ${otp}</b>`
         };
         smtpTransport.sendMail(mail, function(error, response){
             if(error){
