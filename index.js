@@ -47,28 +47,41 @@ app.get('/', (req,res) => {
     });
 });
 
+function sendmail(emailId) {
+    otp =  (Math.random() * 10000).toFixed();
+    var mail = {
+        from: "Gopal Oswal <gploswal@gmail.com>",
+        to: emailId,
+        subject: "Confirmation mail",
+        text: "sent via node api",
+        html: `<b>your confirmation otp for the lets_connect app is ${otp}</b>`
+    };
+    smtpTransport.sendMail(mail, function(error, response){
+        if(error){
+            console.log(error);
+        }else{
+            console.log("Message sent: " + response);
+        }
+        smtpTransport.close();
+    });
+}
+
+app.post('/resendMail', (req,res) => {
+    sendmail(req.body.email);
+    res.send({
+        message: 'mail sent successfully',
+        response:  'Success',
+        staus: 200
+    })
+});
+
 /**
  * function to add the admin
  */
 
 app.post('/addAdmin', (req,res) => {
     pool.query('SELECT * from addadmin($1)', [req.body.email], (err2, res2) => {
-        otp =  (Math.random() * 10000).toFixed();
-        var mail = {
-            from: "Gopal Oswal <gploswal@gmail.com>",
-            to: req.body.email,
-            subject: "Confirmation mail",
-            text: "sent via node api",
-            html: `<b>Sent via nodejs api your random otp is  ${otp}</b>`
-        };
-        smtpTransport.sendMail(mail, function(error, response){
-            if(error){
-                console.log(error);
-            }else{
-                console.log("Message sent: " + response);
-            }
-            smtpTransport.close();
-        });
+        sendmail(req.body.email);
         res.send({
             response : {
                 data:    res2.rows,
