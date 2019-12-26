@@ -22,11 +22,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
  *  connecting to the database
  */
 const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'Lets_share',
-    password: '1234',
-    port: 3000,
+    user: 'oswalgopal',
+    host: 'oswalgopal-database.cmhbhrlpytbe.ap-south-1.rds.amazonaws.com',
+    database: 'lets_share',
+    password: 'oswalgopal25052000',
+    port: 5432,
 });
 /**
  * setting the port for the server
