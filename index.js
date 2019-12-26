@@ -31,7 +31,7 @@ const pool = new Pool({
 /**
  * setting the port for the server
  */
-port = 10000;
+port = 8081;
 
 vaccess_code = '';
 
