@@ -81,11 +81,11 @@ app.post('/resendMail', (req,res) => {
 
 app.post('/addAdmin', (req,res) => {
     pool.query('SELECT * from addadmin($1)', [req.body.email], (err2, res2) => {
-        sendmail(req.body.email);
+        // sendmail(req.body.email);
         res.send({
             response : {
                 data:    res2.rows,
-                otp: otp
+                // otp: otp
             },
             status: 200,
             message: 'Success'
